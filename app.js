@@ -1,3 +1,5 @@
+var Client = require('mongodb').MongoClient;
+
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
@@ -83,14 +85,39 @@ app.post('/message', (req, res) => {
         }).send(JSON.stringify(massage));
     }
     else{
-        massage = {
-            "message": {
-                "text": objBody.message.result.translatedText
+        var wordList = "";
+        Client.connect('mongodb://localhost:27017/yagall', function(error, db) {
+            if(error) console.log(error);
+            else {
+                var flag=0;
+                var tmp = new Date();
+                wordList+=tmp.getFullYear()+"년 "+(tmp.getMonth()+1)+"월 "+tmp.getDate()+"일 키워드 순위입니다.";
+                var t = new Date(tmp.getFullYear()+"-"+(tmp.getMonth()+1)+"-"+tmp.getDate());
+                db.collection('word').aggregate([{$match:{'num':{$gte:t.getTime(),$lt:tmp.getTime()}}},{$group:{_id:"$word",count:{$sum:1}}},{$sort:{"count":-1}},{$limit:100}],function(err,doc){
+                    if(err) console.log(err);
+                    if(doc){
+                        doc.forEach(function(tag){
+                            if(flag<20&&String(tag['_id']).length>1){
+                                var filter=String(tag['_id']);
+                                if(filter!="존나"&&filter!="시발"&&filter!="씨발"&&filter!="새끼"&&filter!="진짜"&&filter!="지금"&&filter!="오늘"&&filter!="본인"&&filter!="요즘"){
+                                    wordList+=String(flag+1)+"위 > "+String(tag['_id'])+"\n";
+                                    flag++;
+                                }
+                            }
+                        });
+                        massage = {
+                            "message": {
+                                "text": wordList
+                            }
+                        };
+                        res.set({
+                            'content-type': 'application/json'
+                        }).send(JSON.stringify(massage));
+                        db.close();
+                    }
+                });
             }
-        };
-        res.set({
-            'content-type': 'application/json'
-        }).send(JSON.stringify(massage));
+        }); 
     //번역 api 테스트
     /*
 	var options = {
