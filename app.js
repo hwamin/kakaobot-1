@@ -92,7 +92,7 @@ app.post('/message', (req, res) => {
                 var flag=0;
                 var tmp = new Date();
                 wordList+=tmp.getFullYear()+"년 "+(tmp.getMonth()+1)+"월 "+tmp.getDate()+"일 키워드 순위입니다.\n";
-                var t = new Date(tmp.getFullYear()+"-"+(tmp.getMonth()+1)+"-"+tmp.getDate());
+                var t = new Date(tmp.getFullYear()+"-"+(tmp.getMonth()+1)+"-"+tmp.getDate()+" 00:00:00");
                 db.collection('word').aggregate([{$match:{'num':{$gte:t.getTime(),$lt:tmp.getTime()+32400000}}},{$group:{_id:"$word",count:{$sum:1}}},{$sort:{"count":-1}},{$limit:100}],function(err,doc){
                     if(err) console.log(err);
                     if(doc){
