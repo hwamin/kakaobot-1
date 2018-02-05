@@ -30,12 +30,12 @@ app.get('/keyboard', (req, res) => {
       'content-type': 'application/json'
   }).send(JSON.stringify(menu));
 });*/
+const menu = {
+	"type" : "buttons",
+	"buttons" : ["도움말","랜덤짤받기","만든이"]
+};
 
 app.get('/keyboard', (req, res) => {
-  const menu = {
-	"type" : "buttons",
-	"buttons" : ["도움말","시작하기","만든이"]
-  }
   res.set({
     'content-type': 'application/json'
   }).send(menu);
@@ -53,71 +53,62 @@ app.post('/message', (req, res) => {
     if(_obj.content=="도움말"){
         massage = {
             "message" : {
-                "text" : "안녕하세요. 후니봇입니다. 키워드를 알려드립니다."
-            }
+                "text" : "러블리즈 랜덤짤봇 입니다. 러블리즈 이미지 갤러리에 있는 이미지 중 랜덤으로 1장을 보여드립니다.",
+                "message_button" : {
+				    "label": "팬페이지",
+				    "url" : "http://lovelyzfan.xyz"
+			    }
+            },
+            "keyboard":menu
         };
         res.set({
             'content-type': 'application/json'
         }).send(JSON.stringify(massage));
     }
-    else if(_obj.content=="시작하기"){
-        massage = {
-            "message" : {
-                "text" : "후니봇 시작합니다."
+    else if(_obj.content=="랜덤짤받기"){
+        Client.connect('mongodb://localhost:27017/lovelyz', function(error, db) {
+            if(error) console.log(error);
+            else {
+                db.collection('img').count(function(err,doc){
+                    if(err) console.log(err);
+                    let num=Math.random()%Number(doc);
+                    db.collection('img').find().skip(num).limit(1).toArray(function(err,doc){
+                        if(err) console.log(err);
+                        massage = {
+                            "message" : {
+                                "text" : "러블리즈 랜덤짤입니다!",
+                                "photo": {
+                                    "url": "http://lovelyzfan.xyz/resources/lovelyz/"+String(doc[0]._id),
+                                    "width": 300,
+                                    "height": 300
+                                }
+                            },
+                            "keyboard":menu
+                        };
+                        res.set({
+                            'content-type': 'application/json'
+                        }).send(JSON.stringify(massage));
+                    });
+                });
             }
-        };
-        res.set({
-            'content-type': 'application/json'
-        }).send(JSON.stringify(massage));
+        }); 
     }
     else if(_obj.content=="만든이"){
         massage = {
             "message" : {
                     "text" : "자유로운 개발자 전승훈입니다.",
 			    "message_button" : {
-				    "label": "홈페이지 주소",
+				    "label": "개인 블로그",
 				    "url" : "http://sodeok.xyz"
 			    }
-            }
+            },
+            "keyboard":menu
         };
 	    res.set({
             'content-type': 'application/json'
         }).send(JSON.stringify(massage));
     }
     else{
-        var wordList = "";
-        Client.connect('mongodb://localhost:27017/yagall', function(error, db) {
-            if(error) console.log(error);
-            else {
-                var flag=0;
-                var tmp = new Date();
-                wordList+=tmp.getFullYear()+"년 "+(tmp.getMonth()+1)+"월 "+tmp.getDate()+"일 키워드 순위입니다.\n";
-                var t = new Date(tmp.getFullYear()+"-"+(tmp.getMonth()+1)+"-"+tmp.getDate());
-                db.collection('word').aggregate([{$match:{'num':{$gte:t.getTime(),$lt:tmp.getTime()+32400000}}},{$group:{_id:"$word",count:{$sum:1}}},{$sort:{"count":-1}},{$limit:100}],function(err,doc){
-                    if(err) console.log(err);
-                    if(doc){
-                        doc.forEach(function(tag){
-                            if(flag<20&&String(tag['_id']).length>1){
-                                var filter=String(tag['_id']);
-                                if(filter!="존나"&&filter!="시발"&&filter!="씨발"&&filter!="새끼"&&filter!="진짜"&&filter!="지금"&&filter!="오늘"&&filter!="본인"&&filter!="요즘"){
-                                    wordList+=String(flag+1)+"위 > "+String(tag['_id'])+"\n";
-                                    flag++;
-                                }
-                            }
-                        });
-                        massage = {
-                            "message": {
-                                "text": wordList
-                            }
-                        };
-                        res.set({
-                            'content-type': 'application/json'
-                        }).send(JSON.stringify(massage));
-                        db.close();
-                    }
-                });
-            }
-        }); 
     //번역 api 테스트
     /*
 	var options = {
