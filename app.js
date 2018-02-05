@@ -76,11 +76,14 @@ app.post('/message', (req, res) => {
                         if(err) console.log(err);
                         massage = {
                             "message" : {
-                                "text" : "러블리즈 랜덤짤입니다!",
                                 "photo": {
-                                    "url": "http://lovelyzfan.xyz/resources/lovelyz/"+String(doc[0]._id),
+                                    "url": "http://lovelyzfan.xyz/resources/lovelyz_thumb/"+String(doc[0]._id),
                                     "width": 300,
                                     "height": 300
+                                },
+                                "message_button" : {
+                                    "label": "원본 보기는 링크 클릭",
+                                    "url" : "http://lovelyzfan.xyz/resources/lovelyz/"+String(doc[0]._id)
                                 }
                             },
                             "keyboard":menu
