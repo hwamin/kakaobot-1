@@ -83,7 +83,7 @@ app.post('/message', (req, res) => {
                                 },
                                 "message_button" : {
                                     "label": "원본 보기는 링크 클릭",
-                                    "url" : "http://lovelyzfan.xyz/resources/lovelyz/"+String(doc[0]._id)
+                                    "url" : "http://sodeok.xyz/img.html?"+String(doc[0]._id)
                                 }
                             },
                             "keyboard":menu
