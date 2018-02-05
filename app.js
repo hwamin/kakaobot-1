@@ -71,7 +71,7 @@ app.post('/message', (req, res) => {
             else {
                 db.collection('img').count(function(err,doc){
                     if(err) console.log(err);
-                    let num=Math.random()%(Number(doc)-1);
+                    let num=Math.floor(Math.random()*Number(doc));
                     db.collection('img').find().skip(num).limit(1).toArray(function(err,doc){
                         if(err) console.log(err);
                         massage = {
