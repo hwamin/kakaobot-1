@@ -53,9 +53,9 @@ app.post('/message', (req, res) => {
     if(_obj.content=="도움말"){
         massage = {
             "message" : {
-                "text" : "러블리즈 랜덤짤봇 입니다. 러블리즈 이미지 갤러리에 있는 이미지 중 랜덤으로 1장을 보여드립니다.",
+                "text" : "러블리즈 랜덤짤봇 입니다.\n러블리즈 이미지 갤러리에 있는 이미지 중 랜덤으로 1장을 보여드립니다.",
                 "message_button" : {
-				    "label": "팬페이지",
+				    "label": "러블리즈 이미지 갤러리",
 				    "url" : "http://lovelyzfan.xyz"
 			    }
             },
@@ -99,7 +99,7 @@ app.post('/message', (req, res) => {
     else if(_obj.content=="만든이"){
         massage = {
             "message" : {
-                    "text" : "자유로운 개발자 전승훈입니다.",
+                    "text" : "학생 개발자 전승훈입니다.",
 			    "message_button" : {
 				    "label": "개인 블로그",
 				    "url" : "http://sodeok.xyz"
