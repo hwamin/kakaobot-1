@@ -55,9 +55,9 @@ app.post('/message', (req, res) => {
             "message" : {
                 "text" : "러블리즈 랜덤짤봇 입니다.\n러블리즈 이미지 갤러리에 있는 이미지 중 랜덤으로 1장을 보여드립니다.",
                 "photo": {
-                    "url": "http://lovelyzfan.xyz/resources/img/404.png",
-                    "width": 300,
-                    "height": 300
+                    "url": "http://sodeok.xyz/lovelyz.jpg",
+                    "width": 400,
+                    "height": 400
                 },
                 "message_button" : {
 				    "label": "러블리즈 이미지 갤러리",
