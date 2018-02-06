@@ -57,7 +57,7 @@ app.post('/message', (req, res) => {
                 "photo": {
                     "url": "http://sodeok.xyz/lovelyz.jpg",
                     "width": 400,
-                    "height": 400
+                    "height": 300
                 },
                 "message_button" : {
 				    "label": "러블리즈 이미지 갤러리",
