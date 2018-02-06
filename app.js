@@ -32,7 +32,7 @@ app.get('/keyboard', (req, res) => {
 });*/
 const menu = {
 	"type" : "buttons",
-	"buttons" : ["도움말","랜덤짤받기","만든이"]
+	"buttons" : ["랜덤짤받기","도움말"]
 };
 
 app.get('/keyboard', (req, res) => {
@@ -54,6 +54,11 @@ app.post('/message', (req, res) => {
         massage = {
             "message" : {
                 "text" : "러블리즈 랜덤짤봇 입니다.\n러블리즈 이미지 갤러리에 있는 이미지 중 랜덤으로 1장을 보여드립니다.",
+                "photo": {
+                    "url": "http://lovelyzfan.xyz/resources/img/404.png",
+                    "width": 300,
+                    "height": 300
+                },
                 "message_button" : {
 				    "label": "러블리즈 이미지 갤러리",
 				    "url" : "http://lovelyzfan.xyz"
