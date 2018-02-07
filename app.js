@@ -93,6 +93,7 @@ app.post('/message', (req, res) => {
                             },
                             "keyboard":menu
                         };
+                        db.close();
                         res.set({
                             'content-type': 'application/json'
                         }).send(JSON.stringify(massage));
